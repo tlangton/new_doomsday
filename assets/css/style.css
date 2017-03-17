@@ -1,0 +1,67 @@
+#example-date-input {}
+
+#asteroid-pic {
+    width: 100%;
+    align-self: center;
+}
+
+.page-header {
+    text-align: center;
+    color: white;
+}
+
+.container {
+    background-color: black;
+    margin: 0;
+}
+
+#dateEntry {
+    color: white;
+}
+
+.form-control {
+    margin-left: 29px;
+}
+
+#userInput {
+    color: red;
+    background: black;
+}
+
+.col-xs-10 {
+    color: red;
+    font-family: 'VT323', monospace;
+    font-size: 25px;
+    background: black;
+    width: 50%;
+    margin-bottom: 0;
+    padding-bottom: 12px;
+    position: relative;
+    left: 97px;
+}
+
+button {
+    align-self: center;
+    font-size: 20px !important;
+}
+
+#googleChart {
+    /*display: block;*/
+    /*margin: auto;*/
+    width: 60%;
+}
+
+.bgContainer{
+	    background-image: url("../images/panetExpress.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.datepicker {
+    text-align: center;
+}
+
+body {
+	background-color: black !important;
+	margin: 0 auto;
+}
