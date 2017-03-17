@@ -14,6 +14,63 @@ var firebaseRef = firebase.database().ref("neos");
 var chartstuff = [];
 var data;
 
+var chartOptions = {
+    title: "Magnitude",
+    titleTextStyle: {
+        color: "#A8A8A8",
+        bold: false
+    },
+    hAxis: {
+        title: "Missed the Earth by this distance in miles",
+        baselineColor: "#444444",
+        textStyle: {
+            color: "#A8A8A8"
+        },
+        titleTextStyle: {
+            color: "#A8A8A8"
+        },
+        gridlines: {
+            color: "#444444"
+        }
+    },
+    vAxis: {
+        title: "Speed in Miles per Hour",
+        baselineColor: "#444444",
+        textStyle: {
+            color: "#A8A8A8"
+        },
+        titleTextStyle: {
+            color: "#A8A8A8"
+        },
+        gridlines: {
+            color: "#444444"
+        }
+    },
+    color: "white",
+    backgroundColor: "black",
+    bubble: {
+        stroke: "black",
+        textStyle: {
+            fontSize: 17,
+            fontName: "Times-Roman",
+            color: "#A8A8A8",
+            bold: true,
+            italic: true,
+            auraColor: "black"
+        }
+    },
+    colorAxis: {
+        colors: ["red", "orange", "yellow"],
+        legend: {
+            positon: "in",
+            color: "#A8A8A8",
+            textStyle: {
+                color: "#A8A8A8"
+            }
+        }
+    }
+};
+
 function apiSearch() {
     var datepicker = $("#datepicker").val();
     var dateFirstSplit = datepicker.split("/");
@@ -58,8 +115,8 @@ function apiSearch() {
             for (i = 0; i < nearEarthObjects.length; i++) {
                 var neo = nearEarthObjects[i];
 
-                var nameClean = neo.name.replace(")","")
-                var nameClean = nameClean.replace("(","")
+                var nameClean = neo.name.replace(")", "");
+                var nameClean = nameClean.replace("(", "");
 
                 var sizeList = [
                     nameClean,
@@ -71,7 +128,7 @@ function apiSearch() {
                     neo.estimated_diameter.feet.estimated_diameter_max
                 ];
 
-                console.log("list: " + sizeList);
+                // console.log("list: " + sizeList);
 
                 var neoObject = {
                     name: sizeList[0],
@@ -83,7 +140,7 @@ function apiSearch() {
                     hazard: sizeList[5],
                     timestampCreated: firebase.database.ServerValue.TIMESTAMP
                 };
-
+                //uncomment to turn on database capture. data 1/1/17 - 3/31/17 currently
                 // firebaseRef.push(neoObject);
 
                 table.push([
@@ -105,62 +162,7 @@ google.charts.load("current", { packages: ["corechart"] });
 function drawSeriesChart(tableArray) {
     var data = google.visualization.arrayToDataTable(tableArray);
 
-    var options = {
-        title: "Magnitude",
-        titleTextStyle: {
-            color: "#A8A8A8",
-            bold: false
-        },
-        hAxis: {
-            title: "Missed the Earth by this distance in miles",
-            baselineColor: "#444444",
-            textStyle: {
-                color: "#A8A8A8"
-            },
-            titleTextStyle: {
-                color: "#A8A8A8"
-            },
-            gridlines: {
-                color: "#444444"
-            }
-        },
-        vAxis: {
-            title: "Speed in Miles per Hour",
-            baselineColor: "#444444",
-            textStyle: {
-                color: "#A8A8A8"
-            },
-            titleTextStyle: {
-                color: "#A8A8A8"
-            },
-            gridlines: {
-                color: "#444444"
-            }
-        },
-        color: "white",
-        backgroundColor: "black",
-        bubble: {
-            stroke: "#FFFD00",
-            textStyle: {
-                fontSize: 17,
-                fontName: "Times-Roman",
-                color: "#A8A8A8",
-                bold: true,
-                italic: true,
-                auraColor: "black"
-            }
-        },
-        colorAxis: {
-            colors: ["red", "orange", "yellow"],
-            legend: {
-                positon: "in",
-                color: "#A8A8A8",
-                textStyle: {
-                    color: "#A8A8A8"
-                }
-            }
-        }
-    };
+    var options = chartOptions;
 
     var chart = new google.visualization.BubbleChart(
         document.getElementById("chart_div")
@@ -176,3 +178,49 @@ $("#search").on("click", function(event) {
 $(function() {
     $(".datepicker").datepicker();
 });
+
+//hazards search
+
+var tableHazards = [
+    ["Name", "Miss distance in miles", "MPH", "Magnitude", "Diameter (in Feet)"]
+];
+
+var firebaseRef2 = firebase.database().ref("neos");
+
+firebaseRef2
+    .orderByChild("hazard")
+    .equalTo(true)
+    .limitToFirst(30)
+    .on("child_added", function(snapshot) {
+        var fbname = snapshot.val().name;
+        var fbMagnitude = snapshot.val().magnitude;
+        var fbDiameter = snapshot.val().max_diameter;
+        var fbMissedMiles = snapshot.val().miles_missed_by;
+        var fbMph = snapshot.val().mph;
+        var fbDate = snapshot.val().date;
+
+        tableHazards.push([
+            fbname,
+            parseInt(fbMissedMiles),
+            parseInt(fbMph),
+            parseInt(fbMagnitude),
+            parseInt(fbDiameter)
+        ]);
+
+        drawStaticChart();
+    });
+
+console.log(tableHazards);
+
+google.charts.load("current", { packages: ["corechart"] });
+
+function drawStaticChart() {
+    var data = google.visualization.arrayToDataTable(tableHazards);
+
+    var options = chartOptions;
+
+    var chart = new google.visualization.BubbleChart(
+        document.getElementById("series_chart_div")
+    );
+    chart.draw(data, options);
+}

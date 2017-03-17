@@ -13,6 +13,7 @@
 
     <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="shortcut icon" href="assets/favicon.ico">
 </head>
 <body>
 
@@ -22,6 +23,8 @@
                 <img src="assets/images/AsteroidFarnsworth2.jpg" alt="asteroid" id="asteroid-pic">
             </div>
             <div class="form-group row text-center">
+                <h2 id="hazard">Hazardous Objects</h2>
+                    <div id="series_chart_div" style="width: 1143px; height: 700px;"></div>
                 <label for="example-date-input" class="col-xs-10">Choose a Date to See If You're Doomed</label>
                 <div class="col-xs-10" id="userInput">
                     <p>From Date:
@@ -34,9 +37,9 @@
             <div class="bgContainer">
                 <div id="googleChart">
                     <div id="chart_div" style="width: 1143px; height: 700px;"></div>
+
                 </div>
             </div>
-            <!-- <div id="series_chart_div" style="width: 900px; height: 500px;"></div> -->
         </div>
 
         <script type="text/javascript" src="assets/javascript/app.js"></script>

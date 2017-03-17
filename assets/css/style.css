@@ -52,7 +52,7 @@ button {
 }
 
 .bgContainer{
-	    background-image: url("../images/panetExpress.png");
+    background-image: url("../images/panetExpress.png");
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -64,4 +64,10 @@ button {
 body {
 	background-color: black !important;
 	margin: 0 auto;
+}
+
+#hazard {
+    color: red;
+    font-family: 'VT323', monospace;
+    font-size: 35px;
 }
