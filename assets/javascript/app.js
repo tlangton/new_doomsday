@@ -9,67 +9,81 @@ var config = {
 
 firebase.initializeApp(config);
 
+var goodNews = document.createElement("audio")
+goodNews.setAttribute("src", "Assets/goodNews.mp3");
+
+var doomed = document.createElement("audio")
+doomed.setAttribute("src", "Assets/wereDoomed.mp3");
+
 var firebaseRef = firebase.database().ref("neos");
 
 var chartstuff = [];
 var data;
 
 var chartOptions = {
-    title: "Magnitude",
-    titleTextStyle: {
-        color: "#A8A8A8",
-        bold: false
-    },
-    hAxis: {
-        title: "Missed the Earth by this distance in miles",
-        baselineColor: "#444444",
-        textStyle: {
-            color: "#A8A8A8"
-        },
+    title: "Magnitude (brightness)",
         titleTextStyle: {
-            color: "#A8A8A8"
-        },
-        gridlines: {
-            color: "#444444"
-        }
-    },
-    vAxis: {
-        title: "Speed in Miles per Hour",
-        baselineColor: "#444444",
-        textStyle: {
-            color: "#A8A8A8"
-        },
-        titleTextStyle: {
-            color: "#A8A8A8"
-        },
-        gridlines: {
-            color: "#444444"
-        }
-    },
-    color: "white",
-    backgroundColor: "black",
-    bubble: {
-        stroke: "black",
-        textStyle: {
-            fontSize: 17,
-            fontName: "Times-Roman",
             color: "#A8A8A8",
-            bold: true,
-            italic: true,
-            auraColor: "black"
-        }
-    },
-    colorAxis: {
-        colors: ["red", "orange", "yellow"],
-        legend: {
-            positon: "in",
-            color: "#A8A8A8",
+            bold: false
+        },
+        hAxis: {
+            title: "Missed the Earth by this distance in miles",
+            baselineColor: "#444444",
             textStyle: {
                 color: "#A8A8A8"
+            },
+            titleTextStyle: {
+                color: "#A8A8A8",
+                fontSize: 20,
+                bold : true
+            },
+            gridlines: {
+                color: "#444444"
+            }
+        },
+        vAxis: {
+            title: "Speed in Miles per Hour",
+            baselineColor: "#444444",
+            textStyle: {
+                color: "#A8A8A8"
+            },
+            titleTextStyle: {
+                color: "#A8A8A8",
+                fontSize: 20,
+                bold: true
+            },
+            gridlines: {
+                color: "#444444"
+            }
+        },
+        color: "white",
+        backgroundColor: "black",
+        bubble: {
+            stroke: "black",
+            textStyle: {
+                fontSize: 17,
+                fontName: "Times-Roman",
+                color: "#A8A8A8",
+                bold: true,
+                italic: true,
+                auraColor: "black"
+            }
+        },
+        colorAxis: {
+            colors: ["red", "yellow", "white"],
+            legend: {
+                positon: "in",
+                color: "#A8A8A8",
+                textStyle: {
+                    color: "#A8A8A8"
+                }
             }
         }
-    }
 };
+
+window.onload = function() {
+    goodNews.play();
+}
 
 function apiSearch() {
     var datepicker = $("#datepicker").val();
@@ -171,6 +185,7 @@ function drawSeriesChart(tableArray) {
 }
 
 $("#search").on("click", function(event) {
+    doomed.play();
     event.preventDefault();
     apiSearch();
 });
